@@ -16,7 +16,7 @@ END_OF_FILE
 struct Token {
     TokenType type;
     std::string value;
-
+Token () {}
     Token(TokenType t, std::string v)
         : type(t), value(v) {}
 };

@@ -36,4 +36,16 @@ public:
     Parser(Lexer lex);
 
     ASTNode* parse();
+    ASTNode* parseExpression();
+    ASTNode* parseFactor();
+    ASTNode* parseTerm();
+};
+int evaluate(ASTNode* node);
+class VariableNode : public ASTNode
+{
+public:
+    std::string name;
+
+    VariableNode(std::string n)
+        : name(n) {}
 };

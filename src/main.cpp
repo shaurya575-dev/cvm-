@@ -1,18 +1,27 @@
 #include <iostream>
+
 #include "lexer.h"
+#include "parser.h"
 
 int main()
 {
-    Lexer lexer("varx + total");
 
-    Token t = lexer.getNextToken();
+    Lexer lexer("(10 + 20) * 3");
 
-    while (t.type != TokenType::END_OF_FILE)
-    {
-        std::cout << t.value << std::endl;
+    Parser parser(lexer);
 
-        t = lexer.getNextToken();
-    }
+    ASTNode* tree = parser.parse();
 
+    int result = evaluate(tree);
+
+    std::cout << result << std::endl;
+Token t = lexer.getNextToken();
+
+while (t.type != TokenType::END_OF_FILE)
+{
+    std::cout << t.value << std::endl;
+
+    t = lexer.getNextToken();
+}
     return 0;
 }

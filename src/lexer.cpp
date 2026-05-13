@@ -77,5 +77,19 @@ if (ch == '=')
     return Token(TokenType::ASSIGN, "=");
 }
 
-    return Token(TokenType::END_OF_FILE, "");
+
+if (source[current] == '(')
+{
+    current++;
+
+    return Token(TokenType::LPAREN, "(");
+}
+
+if (source[current] == ')')
+{
+    current++;
+
+    return Token(TokenType::RPAREN, ")");
+}
+return Token(TokenType::END_OF_FILE, "");
 }
