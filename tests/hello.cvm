@@ -11,3 +11,41 @@ print((x + y) * 2);
 print(100 / 5);
 
 print(7 * 8);
+print(10 > 5);
+print(10 < 5);
+print(10 == 10);
+if (10 > 5)
+    print(999);
+if (10 > 5)
+{
+    print(111);
+    print(222);
+}
+var x = 5;
+
+print(x);
+
+x = 20;
+
+print(x);
+var x = 0;
+
+while (x < 5)
+{
+    print(x);
+
+    x = x + 1;
+}
+var x = 0;
+
+while (x < 5)
+{
+    print(x);
+
+    x = x + 1;
+}
+var x = 0;
+
+input(x);
+
+print(x);

@@ -35,15 +35,23 @@ ASTNode* Parser::parseFactor()
 
         return node;
     }
-if (currentToken.type == TokenType::IDENTIFIER)
+if (currentToken.type ==
+    TokenType::IDENTIFIER)
 {
     ASTNode* node =
-        new VariableNode(currentToken.value);
+        new VariableNode(
+            currentToken.value
+        );
 
-    currentToken = lexer.getNextToken();
+    currentToken =
+        lexer.getNextToken();
 
     return node;
 }
+
+
+    
+       
     if (currentToken.type == TokenType::LPAREN)
     {
         currentToken = lexer.getNextToken();
@@ -88,43 +96,220 @@ ASTNode* Parser::parseStatement()
     {
         currentToken = lexer.getNextToken();
 
-        std::string name = currentToken.value;
+        std::string name =
+            currentToken.value;
 
-        currentToken = lexer.getNextToken();
+        currentToken =
+            lexer.getNextToken();
 
-        currentToken = lexer.getNextToken();
+        currentToken =
+            lexer.getNextToken();
 
-        ASTNode* value = parseExpression();
+        ASTNode* value =
+            parseExpression();
 
-        currentToken = lexer.getNextToken();
+        currentToken =
+            lexer.getNextToken();
 
-        return new VarDeclNode(name, value);
+        return new VarDeclNode(
+            name,
+            value
+        );
     }
-if (currentToken.type == TokenType::PRINT)
-{
-    currentToken = lexer.getNextToken();
 
-    currentToken = lexer.getNextToken();
+    if (currentToken.type ==
+        TokenType::PRINT)
+    {
+        currentToken =
+            lexer.getNextToken();
+
+        currentToken =
+            lexer.getNextToken();
+
+        ASTNode* expr =
+            parseExpression();
+
+        currentToken =
+            lexer.getNextToken();
+
+        currentToken =
+            lexer.getNextToken();
+
+        return new PrintNode(expr);
+    }
+if (currentToken.type ==
+    TokenType::INPUT)
+{
+    currentToken =
+        lexer.getNextToken();
+
+    currentToken =
+        lexer.getNextToken();
+
+    std::string name =
+        currentToken.value;
+
+    currentToken =
+        lexer.getNextToken();
+
+    currentToken =
+        lexer.getNextToken();
+
+    currentToken =
+        lexer.getNextToken();
+
+    return new InputNode(name);
+}
+    if (currentToken.type ==
+        TokenType::IF)
+    {
+        currentToken =
+            lexer.getNextToken();
+
+        if (currentToken.type ==
+            TokenType::LPAREN)
+        {
+            currentToken =
+                lexer.getNextToken();
+        }
+
+        ASTNode* condition =
+            parseExpression();
+
+        if (currentToken.type ==
+            TokenType::RPAREN)
+        {
+            currentToken =
+                lexer.getNextToken();
+        }
+
+        ASTNode* body;
+
+        if (currentToken.type ==
+            TokenType::LBRACE)
+        {
+            body = parseBlock();
+        }
+        else
+        {
+            body = parseStatement();
+        }
+
+        return new IfNode(
+            condition,
+            body
+        );
+    }
+ if (currentToken.type ==
+    TokenType::WHILE)
+{
+    currentToken =
+        lexer.getNextToken();
+
+    if (currentToken.type ==
+        TokenType::LPAREN)
+    {
+        currentToken =
+            lexer.getNextToken();
+    }
+
+    ASTNode* condition =
+        parseExpression();
+
+    if (currentToken.type ==
+        TokenType::RPAREN)
+    {
+        currentToken =
+            lexer.getNextToken();
+    }
+
+    ASTNode* body;
+
+    if (currentToken.type ==
+        TokenType::LBRACE)
+    {
+        body = parseBlock();
+    }
+    else
+    {
+        body = parseStatement();
+    }
+
+    return new WhileNode(
+        condition,
+        body
+    );
+}
+    if (currentToken.type ==
+        TokenType::IDENTIFIER)
+    {
+        std::string name =
+            currentToken.value;
+
+        currentToken =
+            lexer.getNextToken();
+
+        if (currentToken.type ==
+            TokenType::ASSIGN)
+        {
+            currentToken =
+                lexer.getNextToken();
+
+            ASTNode* value =
+                parseExpression();
+
+            if (currentToken.type ==
+                TokenType::SEMICOLON)
+            {
+                currentToken =
+                    lexer.getNextToken();
+            }
+
+            return new AssignmentNode(
+                name,
+                value
+            );
+        }
+    }
 
     ASTNode* expr =
         parseExpression();
 
-    currentToken = lexer.getNextToken();
+    if (currentToken.type ==
+        TokenType::SEMICOLON)
+    {
+        currentToken =
+            lexer.getNextToken();
+    }
 
-    currentToken = lexer.getNextToken();
-
-    return new PrintNode(expr);
+    return expr;
 }
-  //  return parseExpression();
-  ASTNode* expr = parseExpression();
-
-if (currentToken.type ==
-    TokenType::SEMICOLON)
+ ASTNode* Parser::parseBlock()
 {
-    currentToken = lexer.getNextToken();
-}
+    BlockNode* block =
+        new BlockNode();
 
-return expr;
+    if (currentToken.type ==
+        TokenType::LBRACE)
+    {
+        currentToken =
+            lexer.getNextToken();
+    }
+
+    while (
+        currentToken.type !=
+        TokenType::RBRACE
+    )
+    {
+        block->statements.push_back(
+            parseStatement()
+        );
+    }
+
+    currentToken =
+        lexer.getNextToken();
+
+    return block;
 }
 ASTNode* Parser::parseExpression()
 {
@@ -137,7 +322,10 @@ ASTNode* Parser::parseExpression()
 
   while (
     currentToken.type == TokenType::PLUS ||
-    currentToken.type == TokenType::MINUS
+    currentToken.type == TokenType::MINUS ||
+    currentToken.type == TokenType::EQ ||
+    currentToken.type == TokenType::LT ||
+    currentToken.type == TokenType::GT
 )
 {
     std::string op = currentToken.value;
@@ -194,6 +382,20 @@ if (bin->op == "*")
 if (bin->op == "/")
 {
     return leftValue / rightValue;
+}
+if (bin->op == "==")
+{
+    return leftValue == rightValue;
+}
+
+if (bin->op == "<")
+{
+    return leftValue < rightValue;
+}
+
+if (bin->op == ">")
+{
+    return leftValue > rightValue;
 }
     }
 VarDeclNode* varDecl =

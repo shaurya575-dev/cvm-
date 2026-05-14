@@ -1,4 +1,6 @@
 #include <iostream>
+#include <fstream>
+#include <sstream>
 
 #include "lexer.h"
 #include "parser.h"
@@ -7,10 +9,13 @@
 
 int main()
 {
-    std::string source =
-        "var x = 10; "
-        "print(x); "
-        "print(x + 5);";
+    std::ifstream file("tests/hello.cvm");
+
+    std::stringstream buffer;
+
+    buffer << file.rdbuf();
+
+    std::string source = buffer.str();
 
     Lexer lexer(source);
 

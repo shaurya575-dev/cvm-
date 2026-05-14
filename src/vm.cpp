@@ -60,6 +60,38 @@ int VM::run(std::vector<int> bytecode)
 
             stack.push_back(left / right);
         }
+        else if (instruction == OP_EQ)
+{
+    int right = stack.back();
+    stack.pop_back();
+
+    int left = stack.back();
+    stack.pop_back();
+
+    stack.push_back(left == right);
+}
+
+else if (instruction == OP_LT)
+{
+    int right = stack.back();
+    stack.pop_back();
+
+    int left = stack.back();
+    stack.pop_back();
+
+    stack.push_back(left < right);
+}
+
+else if (instruction == OP_GT)
+{
+    int right = stack.back();
+    stack.pop_back();
+
+    int left = stack.back();
+    stack.pop_back();
+
+    stack.push_back(left > right);
+}
 else if (instruction == OP_STORE)
 {
     ip++;
@@ -83,6 +115,19 @@ else if (instruction == OP_LOAD)
         variables[slot]
     );
 }
+else if (instruction == OP_INPUT)
+{
+    ip++;
+
+    int slot =
+        bytecode[ip];
+
+    int value;
+
+    std::cin >> value;
+
+    variables[slot] = value;
+}
 else if (instruction == OP_PRINT)
 {
     int value = stack.back();
@@ -90,6 +135,44 @@ else if (instruction == OP_PRINT)
     stack.pop_back();
 
     std::cout << value << std::endl;
+}
+else if (instruction == OP_JUMP_IF_FALSE)
+{
+    ip++;
+
+    int target = bytecode[ip];
+
+    int condition = stack.back();
+
+    stack.pop_back();
+
+    if (condition == 0)
+   {
+    ip =target;
+    continue;
+   }
+}
+else if (instruction == OP_JUMP)
+{
+    ip++;
+
+    int target =
+        bytecode[ip];
+
+    ip = target;
+
+    continue;
+}
+else if (instruction == OP_JUMP)
+{
+    ip++;
+
+    int target =
+        bytecode[ip];
+
+    ip = target;
+
+    continue;
 }
         else if (instruction == OP_HALT)
         {

@@ -44,6 +44,24 @@ if (identifier == "print")
 {
     return Token(TokenType::PRINT, identifier);
 }
+if (identifier == "input")
+{
+    return Token(
+        TokenType::INPUT,
+        identifier
+    );
+}
+if (identifier == "while")
+{
+    return Token(TokenType::WHILE, identifier);
+}
+if (identifier == "if")
+{
+    return Token(
+        TokenType::IF,
+        identifier
+    );
+}
 
 return Token(TokenType::IDENTIFIER, identifier);
 }
@@ -71,12 +89,24 @@ if (ch == '/')
     return Token(TokenType::SLASH, "/");
 }
 
+//if (ch == '=')
+//{
+  //  current++;
+  //  return Token(TokenType::ASSIGN, "=");
+//}
 if (ch == '=')
 {
     current++;
+
+    if (source[current] == '=')
+    {
+        current++;
+
+        return Token(TokenType::EQ, "==");
+    }
+
     return Token(TokenType::ASSIGN, "=");
 }
-
 
 if (source[current] == '(')
 {
@@ -91,6 +121,19 @@ if (source[current] == ')')
 
     return Token(TokenType::RPAREN, ")");
 }
+if (source[current] == '{')
+{
+    current++;
+
+    return Token(TokenType::LBRACE, "{");
+}
+
+if (source[current] == '}')
+{
+    current++;
+
+    return Token(TokenType::RBRACE, "}");
+}
 if (ch == ';')
 {
     current++;
@@ -99,6 +142,31 @@ if (ch == ';')
         TokenType::SEMICOLON,
         ";"
     );
+}
+if (ch == '<')
+{
+    current++;
+
+    return Token(TokenType::LT, "<");
+}
+if (ch == '>')
+{
+    current++;
+
+    return Token(TokenType::GT, ">");
+}
+if (ch == '=')
+{
+    current++;
+
+    if (source[current] == '=')
+    {
+        current++;
+
+        return Token(TokenType::EQ, "==");
+    }
+
+    return Token(TokenType::ASSIGN, "=");
 }
 return Token(TokenType::END_OF_FILE, "");
 }

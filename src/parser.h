@@ -48,6 +48,7 @@ public:
     ASTNode* parseFactor();
     ASTNode* parseTerm();
     ASTNode* parseStatement();
+    ASTNode* parseBlock();
 };
 int evaluate(ASTNode* node);
 class VarDeclNode : public ASTNode
@@ -59,6 +60,21 @@ public:
     VarDeclNode(std::string n, ASTNode* v)
         : name(n), value(v) {}
 };
+class AssignmentNode : public ASTNode
+{
+public:
+    std::string name;
+    ASTNode* value;
+
+    AssignmentNode(
+        std::string n,
+        ASTNode* v
+    )
+    {
+        name = n;
+        value = v;
+    }
+};
 class PrintNode : public ASTNode
 {
 public:
@@ -66,6 +82,51 @@ public:
 
     PrintNode(ASTNode* expr)
         : expression(expr) {}
+};
+class InputNode : public ASTNode
+{
+public:
+    std::string name;
+
+    InputNode(std::string n)
+    {
+        name = n;
+    }
+};
+class IfNode : public ASTNode
+{
+public:
+    ASTNode* condition;
+    ASTNode* body;
+
+    IfNode(
+        ASTNode* cond,
+        ASTNode* stmt
+    )
+        : condition(cond),
+          body(stmt)
+    {
+    }
+};
+class WhileNode : public ASTNode
+{
+public:
+    ASTNode* condition;
+    ASTNode* body;
+
+    WhileNode(
+        ASTNode* cond,
+        ASTNode* bod
+    )
+    {
+        condition = cond;
+        body = bod;
+    }
+};
+class BlockNode : public ASTNode
+{
+public:
+    std::vector<ASTNode*> statements;
 };
 class ProgramNode : public ASTNode
 {
