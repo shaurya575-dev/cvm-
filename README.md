@@ -1,67 +1,35 @@
-# Stack-Based Virtual Machine & Custom Compiler
+# CVM++
 
-A miniature programming language implemented in C++.
+A custom scripting language and virtual machine written in C++.
 
 ## Features
 
-- Lexer / Tokenizer
-- Recursive Descent Parser
-- Abstract Syntax Tree (AST)
-- Bytecode Compiler
-- Stack-Based Virtual Machine
 - Variables
-- Arithmetic Expressions
-- Print Statements
-- Multiple Statements
+- Arithmetic
+- Comparisons
+- if statements
+- while loops
+- Input / Output
+- Bytecode compiler
+- Stack virtual machine
 
-## Example Program
+## Example
 
 ```c
-var x = 10;
-print(x);
+var x = 0;
 
-var y = 20;
-print(y);
+while (x < 5)
+{
+    print(x);
 
-print(x + y);
-print((x + y) * 2);
-```
-
-## Expected Output
-
-```text
-10
-20
-30
-60
-```
-
-## Architecture
-
-Source Code
-→ Lexer
-→ Parser
-→ AST
-→ Compiler
-→ Bytecode
-→ Virtual Machine
-
-## Build
-
-```bash
-g++ main.cpp lexer.cpp parser.cpp compiler.cpp vm.cpp -o main
-```
-
-## Run
-
-```bash
+    x = x + 1;
+}
+g++ src/main.cpp src/lexer.cpp src/parser.cpp src/compiler.cpp src/vm.cpp -o main
 .\main
-```
 
-## Project Structure
+Then push again:
 
-```text
-src/
-tests/
-README.md
-```
+```bash id="f2w7rn"
+git add .
+git commit -m "Add README"
+git push
