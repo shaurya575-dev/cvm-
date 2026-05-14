@@ -2,26 +2,31 @@
 
 #include "lexer.h"
 #include "parser.h"
+#include "compiler.h"
+#include "vm.h"
 
 int main()
 {
+    std::string source =
+        "var x = 10; "
+        "print(x); "
+        "print(x + 5);";
 
-    Lexer lexer("(10 + 20) * 3");
+    Lexer lexer(source);
 
     Parser parser(lexer);
 
     ASTNode* tree = parser.parse();
 
-    int result = evaluate(tree);
+    Compiler compiler;
 
-    std::cout << result << std::endl;
-Token t = lexer.getNextToken();
+    compiler.compile(tree);
 
-while (t.type != TokenType::END_OF_FILE)
-{
-    std::cout << t.value << std::endl;
+    compiler.bytecode.push_back(OP_HALT);
 
-    t = lexer.getNextToken();
-}
+    VM vm;
+
+    vm.run(compiler.bytecode);
+
     return 0;
 }

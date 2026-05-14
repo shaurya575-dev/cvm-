@@ -91,5 +91,14 @@ if (source[current] == ')')
 
     return Token(TokenType::RPAREN, ")");
 }
+if (ch == ';')
+{
+    current++;
+
+    return Token(
+        TokenType::SEMICOLON,
+        ";"
+    );
+}
 return Token(TokenType::END_OF_FILE, "");
 }

@@ -1,5 +1,5 @@
 #pragma once
-
+#include <vector>
 #include "lexer.h"
 
 class ASTNode
@@ -14,6 +14,14 @@ public:
 
     NumberNode(std::string val)
         : value(val) {}
+};
+class VariableNode : public ASTNode
+{
+public:
+    std::string name;
+
+    VariableNode(std::string n)
+        : name(n) {}
 };
 class BinaryOpNode : public ASTNode
 {
@@ -39,13 +47,28 @@ public:
     ASTNode* parseExpression();
     ASTNode* parseFactor();
     ASTNode* parseTerm();
+    ASTNode* parseStatement();
 };
 int evaluate(ASTNode* node);
-class VariableNode : public ASTNode
+class VarDeclNode : public ASTNode
 {
 public:
     std::string name;
+    ASTNode* value;
 
-    VariableNode(std::string n)
-        : name(n) {}
+    VarDeclNode(std::string n, ASTNode* v)
+        : name(n), value(v) {}
+};
+class PrintNode : public ASTNode
+{
+public:
+    ASTNode* expression;
+
+    PrintNode(ASTNode* expr)
+        : expression(expr) {}
+};
+class ProgramNode : public ASTNode
+{
+public:
+    std::vector<ASTNode*> statements;
 };

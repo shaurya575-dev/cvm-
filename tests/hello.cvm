@@ -1,0 +1,13 @@
+var x = 10;
+print(x);
+
+var y = 20;
+print(y);
+
+print(x + y);
+
+print((x + y) * 2);
+
+print(100 / 5);
+
+print(7 * 8);
